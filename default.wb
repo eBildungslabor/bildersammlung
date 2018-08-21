@@ -8,3 +8,99 @@ or select <strong>Compose</strong> under <span style="color:#ccc">☰</span>.
 <li>You may proceed to compose your slides, or click on the icon <img style="max-height:1em;width:auto" src="icons/File_Open.svg"/> to load <code>.wb</code> or <code>.xml</code> file.
 </li>
 </ul>
+@sep
+@lecture{1}
+<h3>Creating a Slideshow</h3>
+To create a slideshow, first create a text file with extention .wb on your computer.
+@sep
+<h4>Adding a New Slide</h4>
+For each new slide, enter the tag <code><span>@</span>sep</code> in the .wb file, preferably on a new line of its own for readability.
+@sep
+<h4>Math Formulas</h4>
+To input math formulas or equations, simply enter standard latex code in the .wb file, enclosed by $\$$ or $\backslash[ \; \ldots \backslash]$.  Hence, 
+<center><code>\[\frac{a}{b} = \sqrt{2}\]</code></center>
+gives:
+<center>
+\[
+\frac{a}{b} = \sqrt{2}
+\]
+</center>
+@sep
+<h4>Collapsible Sequences</h4>
+To create a nested sequence of collapsed elements.  Start with the tag <code><span>@</span>newcol</code>.
+
+For each new collapsed element within the sequence, enter the tag <code><span>@</span>col</code>.
+To end the sequence, enter <code><span>@</span>endcol</code>
+Hence:
+<br><br>
+<pre style="border: 1px solid #bbb; border-radius:10px; padding:10px">
+<span>@</span>newcol
+First collapsed element.
+
+<span>@</span>col
+Second collapsed element.
+<span>@</span>col
+Third.
+<span>@</span>endcol
+</pre>
+<br>
+gives:
+
+@newcol
+First collapsed element.
+
+@col
+Second collapsed element.
+@col
+Third.
+@endcol.
+
+(Notice the effect of a blank line before the <code><span>@</span>col</code> tag.)
+@sep
+To add a <strong>theorem, proposition, claim, corollary, lemma, definition, example, exercise</strong>, enter <code><span>@</span>thm</code>, <code><span>@</span>prop</code>, <code><span>@</span>claim</code>, <code><span>@</span>corollary</code>, <code><span>@</span>lemma</code>, <code><span>@</span>def</code>, <code><span>@</span>eg</code>, <code><span>@</span>ex</code>, respectively.  At the end of the statement, enter <code><span>@</span>end</code>.
+<br><br>
+<h5 class="notkw">Example</h5>
+<pre style="border: 1px solid #bbb; border-radius:10px; padding:10px">
+<span>@</span>def
+A function $f : \mathbb{R} \longrightarrow \mathbb{R}$ 
+is continuous at a number $c$ if:
+\[
+\lim_{x \rightarrow c} f(x) = f(c).
+\]
+<span>@</span>end
+
+<span>@</span>thm
+Let $a, b \in \mathbb{R}$.
+If a function $f : [a, b] \longrightarrow \mathbb{R}$
+is continuous everywhere, 
+
+<span>@</span>col
+then $f$ attains a maximum and minimum.
+<span>@</span>end
+</pre>
+gives:
+@def
+A function $f : \mathbb{R} \longrightarrow \mathbb{R}$ 
+is said to be <b>continuous</b> at $c \in \mathbb{R}$ if:
+\[
+\lim_{x \rightarrow c} f(x) = f(c).
+\]
+@end
+
+@thm
+Let $a, b \in \mathbb{R}$.
+If a function $f : [a, b] \longrightarrow \mathbb{R}$
+is continuous everywhere, 
+
+@col
+then $f$ attains both a maximum value and a minimum value.
+@end
+Note that the collapsible element in the theorem is supposed to be ended by <code><span>@</span>endcol</code>.
+A collapsible sequence is not allowed to "straddle" the end of a theorem-like environment.
+<p></p>
+In this case, though the <code><span>@</span>endcol</code> tag is ommitted, the collapible sequence is ended automatically. The Elephas engine affords a rudimentary degree of fault tolerance (though perhaps not too much, at this juncture.)
+
+
+
+
+
