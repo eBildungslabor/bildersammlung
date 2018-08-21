@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <xsl:output method="text" encoding="UTF-8"/>
+    <xsl:template match="/">
+        <xsl:text>\documentclass[a4paper,12pt]{report}</xsl:text>
+        <xsl:call-template name="latex-preamble" />
+        <xsl:text>\begin{document}&#xa;</xsl:text>
+        <xsl:apply-templates select="*"/>
+       <xsl:text>&#xa;\end{document}&#xa;</xsl:text>
+   </xsl:template>
+
+<xsl:template name="latex-preamble">
+\usepackage[T1]{fontenc}&#xa;
+\usepackage{times}&#xa;
+\usepackage{amsthm}&#xa;
+\usepackage{amscd,amssymb,stmaryrd}&#xa;
+\usepackage{amsmath}&#xa;
+\usepackage{graphicx}&#xa;
+\usepackage{fancybox}&#xa;
+\usepackage{amstext}&#xa;
+\usepackage{color}&#xa;
+\usepackage{mathtools}&#xa;
+\usepackage{pdflscape}&#xa;
+\usepackage{listings}&#xa;
+\usepackage{epic,eepic} &#xa;
+\usepackage{fancyhdr}&#xa;
+\usepackage{hyperref}
+\usepackage[capitalise]{cleveref}
+<!-- \usepackage{booktabs}&#xa; -->
+
+\newcommand{\abs}[1]{\left|#1\right|}&#xa;
+\newcommand{\ds}{\displaystyle}&#xa;
+\newcommand{\ol}[1]{\overline{#1}}&#xa;
+\newcommand{\oll}[1]{\overline{\overline{#1}}}&#xa;
+\newcommand{\bs}{\backslash}&#xa;
+\newcommand{\Frac}{\mathrm{Frac}}&#xa;
+\newcommand{\im}{\mathrm{im}\,}&#xa;
+\newcommand{\ZZ}{\mathbb{Z}}&#xa;
+\newcommand{\ra}{\longrightarrow}&#xa;
+\newcommand{\ord}{\mathrm{ord}\,}&#xa;
+\newcommand{\GL}{{\rm GL}}&#xa;
+\newcommand{\SL}{{\rm SL}}&#xa;
+\newcommand{\SO}{{\rm SO}}&#xa;
+\newcommand{\colvec}[1]{\begin{pmatrix}#1\end{pmatrix}}&#xa;
+\newcommand{\Span}{{\rm Span}\,}&#xa;
+\newcommand{\Rank}{{\rm Rank}\,}&#xa;
+\newcommand{\nullity}{{\rm nullity}\,}&#xa;
+\newcommand{\adj}{{\rm adj}\,}&#xa;
+\newcommand{\Proj}{{\rm Proj}}&#xa;
+\newcommand{\ora}{\overrightarrow}&#xa;
+\newcommand{\ve}{\varepsilon}&#xa;
+\newcommand{\phib}{\ol{\phi}}&#xa;
+\renewcommand{\ord}{\mathrm{ord}\,}&#xa;
+\newtheorem{thm}[equation]{Theorem}&#xa;
+\newtheorem{prop}[equation]{Proposition}&#xa;
+\newtheorem{defn}[equation]{Definition}&#xa;
+\newtheorem{lemma}[equation]{Lemma}&#xa;
+\newtheorem{claim}[equation]{Claim}&#xa;
+\newtheorem{cor}[equation]{Corollary}&#xa;
+\theoremstyle{remark}&#xa;
+\newtheorem{example}[equation]{\bf Example}&#xa;
+\newtheorem{eg}[equation]{\bf Example}&#xa;
+\newtheorem{ex}[equation]{\bf Exercise}&#xa;
+\newtheorem*{notation}{\bf Notation}&#xa;
+\newtheorem*{remark}{\bf Remark}&#xa;
+\numberwithin{equation}{chapter}&#xa;
+<!-- \renewcommand{\thesubsection}{\thechapter.\arabic{subsection}}&#xa; -->
+\renewcommand{\thesubsection}{}&#xa;
+<!-- \renewcommand{\thesection}{\arabic{section}}&#xa; -->
+\renewcommand{\thesection}{}&#xa;
+</xsl:template>
+
+    <xsl:template match="/slides/slide">
+        <!-- <xsl:text>&#xa;\quad\\\hrule&#xa;\quad\\&#xa;</xsl:text> -->
+        <xsl:apply-templates select="*" />
+    </xsl:template>
+
+    <xsl:template match="keywords|keyword"/>
+
+    <xsl:template match="course">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>\title{</xsl:text>
+        <xsl:value-of select="."/>
+        <xsl:text>}</xsl:text>
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="week|lecture">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:value-of select="concat('\setcounter{chapter}{', current(), '}')"/>
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>\chapter*{</xsl:text>
+        <xsl:value-of select="//course"/><xsl:text> </xsl:text>
+        <xsl:value-of select="@chapter_type"/><xsl:text> </xsl:text><xsl:value-of select="."/>
+        <xsl:text>}</xsl:text>
+        <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="topic">
+        <xsl:text>&#xa;{\bf </xsl:text>
+        <xsl:apply-templates select="*|text()" />
+        <xsl:text>}&#xa;</xsl:text>
+        <xsl:text>&#xa;\quad\\\hrule&#xa;\quad\\&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="a">
+        <xsl:value-of select="."/>
+    </xsl:template>
+
+    <xsl:template match="paragraphs" >
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:apply-templates select="*|text()|comment()" />
+    </xsl:template>
+
+    <xsl:template match="col|newcol" >
+        <!-- <xsl:text>&#xa;</xsl:text> -->
+        <xsl:apply-templates select="*" />
+    </xsl:template>
+
+    <xsl:template match="statement|substatement">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>\begin{</xsl:text>
+        <xsl:value-of select="@wbtag"/>
+        <xsl:text>}</xsl:text>
+        <xsl:choose>
+            <xsl:when test="@label">
+                <xsl:text>&#xa;\label{</xsl:text>
+                <xsl:value-of select="@label"/>
+                <xsl:text>}&#xa;</xsl:text>
+            </xsl:when>
+        </xsl:choose>
+        <xsl:apply-templates select="*" />
+        <xsl:text>&#xa;\end{</xsl:text>
+        <xsl:value-of select="@wbtag"/>
+        <xsl:text>}</xsl:text>
+    </xsl:template>
+
+    <!-- <xsl:template match="p|table|tbody|th|tr|td|div[@class='image']|a|img|li">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:element name="{name()}">
+            <xsl:apply-templates select="*|text()" />
+            <xsl:text>&#xa;</xsl:text>
+        </xsl:element>
+    </xsl:template> -->
+
+    <xsl:template match="ul|col_ul">
+        <xsl:text>&#xa;\quad\\</xsl:text>
+        <xsl:text>\begin{itemize}</xsl:text>
+        <xsl:apply-templates select="*" />
+        <xsl:text>\end{itemize}</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="ol|col_ol">
+        <xsl:text>&#xa;\quad\\</xsl:text>
+        <xsl:text>\begin{enumerate}</xsl:text>
+        <xsl:apply-templates select="*" />
+        <xsl:text>\end{enumerate}</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="li|col_li">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>\item </xsl:text>
+        <xsl:apply-templates select="text()|*" />
+    </xsl:template>
+
+    <xsl:template match="webwork">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>{\bf WeBWork}</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="h1">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>\chapter{</xsl:text>
+        <xsl:apply-templates select="text()" />
+        <xsl:text>}&#xa;</xsl:text>
+    </xsl:template>
+    <xsl:template match="h2">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>\section{</xsl:text>
+        <xsl:apply-templates select="text()" />
+        <xsl:text>}&#xa;</xsl:text>
+    </xsl:template>
+    <xsl:template match="h3">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>\subsection{</xsl:text>
+        <xsl:apply-templates select="text()" />
+        <xsl:text>}&#xa;</xsl:text>
+    </xsl:template>
+    <xsl:template match="h4">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>\subsubsection{</xsl:text>
+        <xsl:apply-templates select="text()" />
+        <xsl:text>}&#xa;</xsl:text>
+    </xsl:template>
+    <xsl:template match="h5">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>\textbf{</xsl:text>
+        <xsl:apply-templates select="text()" />
+        <xsl:text>}&#xa;</xsl:text>
+    </xsl:template>
+
+    <!-- <xsl:template match="h1|h2|h3|h4|h5">
+        <xsl:apply-templates select="text()" />
+    </xsl:template> -->
+
+    <xsl:template match="br">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="hr">
+        <xsl:text>&#xa;\quad\\\hrule&#xa;\quad\\&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="b|strong|em">
+        <!-- <xsl:text> </xsl:text> -->
+        <xsl:text> {\bf </xsl:text>
+            <xsl:apply-templates select="*|text()" />
+        <xsl:text>} </xsl:text>
+    </xsl:template>
+
+    <xsl:template match="ref">
+        <xsl:value-of select="concat('\cref{', @label, '}')"/>
+    </xsl:template>
+
+    <xsl:template match="linebreak|br">
+        <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
+    <xsl:template match="text()" >
+        <!-- <xsl:value-of select="normalize-space(.)" /> -->
+        <xsl:value-of select="." />
+    </xsl:template>
+    <xsl:template match="comment()" >
+    </xsl:template>
+
+    <xsl:template match="div"/>
+
+    <!-- https://stackoverflow.com/questions/19716449/converting-xhtml-table-to-latex-using-xslt -->
+    <xsl:template match="table">
+        <xsl:text>\begin{center}&#10;</xsl:text>
+        <xsl:text>\begin{tabular}{|</xsl:text>
+
+        <xsl:for-each select="thead/tr[1]/*|tr[1]/*">
+            <xsl:choose>
+                <xsl:when test="@colspan">
+                    <xsl:for-each select="(//*)[position()&lt;=current()/@colspan]">|c|</xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:choose>
+                        <xsl:when test="position() = 1">c</xsl:when>
+                        <xsl:otherwise>|c</xsl:otherwise>
+                    </xsl:choose>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+        <xsl:text>|}&#10;</xsl:text>
+
+
+        <xsl:for-each select="thead/tr">
+            <xsl:text>\hline&#10;</xsl:text>
+            <xsl:for-each select="td|th">
+                <xsl:if test="self::th|self::td">\bfseries </xsl:if>
+                <xsl:apply-templates />
+                <xsl:if test="position() != last()">
+                    <xsl:text>&amp;</xsl:text>
+                </xsl:if>
+            </xsl:for-each>
+            <xsl:text>\\\hline&#10;</xsl:text>
+        </xsl:for-each>
+
+        <xsl:for-each select="tr|tbody/tr">
+            <!-- <xsl:if test="position() != 1">
+                <xsl:text>\hline&#10;</xsl:text>
+            </xsl:if> -->
+
+            <xsl:text>\hline&#10;</xsl:text>
+
+            <!-- <xsl:if test="position() = 2">
+                <xsl:text>\hline&#10;</xsl:text>
+            </xsl:if> -->
+
+            <xsl:for-each select="td|th">
+                <xsl:if test="self::th">\bfseries </xsl:if>
+                <xsl:apply-templates />
+                <xsl:if test="position() != last()">
+                    <xsl:text>&amp;</xsl:text>
+                </xsl:if>
+            </xsl:for-each>
+
+            <xsl:if test="position()!=last()"> \\&#10;</xsl:if>
+        </xsl:for-each>
+
+        <xsl:text>\\\hline&#10;</xsl:text>
+        <xsl:text>\end{tabular}&#10;</xsl:text>
+        <xsl:text>\end{center}</xsl:text>
+
+    </xsl:template>
+
+</xsl:stylesheet>

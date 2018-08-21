@@ -5,11 +5,13 @@
 
     <xsl:template match="/">
         <xsl:for-each select="/slides/slide">
-            <xsl:text>&#xa;@sep&#xa;</xsl:text>
+            <xsl:if test="position() != 1">
+                <xsl:text>&#xa;</xsl:text>
+            </xsl:if>
+            <xsl:text>@sep&#xa;</xsl:text>
             <xsl:apply-templates select="*" />
         </xsl:for-each>
     </xsl:template>
-
 
     <xsl:template match="paragraph" >
         <xsl:text>&#xa;</xsl:text>
@@ -82,10 +84,12 @@
         <xsl:text>&#xa;@end&#xa;</xsl:text>
     </xsl:template>
 
-    <xsl:template match="p|table|tbody|th|tr|td|div[@class='image']|a|img|li">
+
+    <xsl:template match="p">
         <xsl:text>&#xa;</xsl:text>
         <xsl:element name="{name()}">
-            <xsl:apply-templates select="*|text()" />
+            <xsl:copy-of select="*"/>
+            <xsl:apply-templates select="*|text()|comment()" />
             <xsl:text>&#xa;</xsl:text>
         </xsl:element>
     </xsl:template>
@@ -122,7 +126,7 @@
         <xsl:text>&#xa;</xsl:text>
     </xsl:template>
 
-    <xsl:template match="b|strong|em">
+    <xsl:template match="b|strong|em|i">
         <!-- <xsl:text> </xsl:text> -->
         <xsl:element name="{name()}">
             <xsl:apply-templates select="text()" />
@@ -130,9 +134,34 @@
         <!-- <xsl:text> </xsl:text> -->
     </xsl:template>
 
+    <xsl:template match="center|table|tbody|thead|th|tr|td|div|a|img|li|iframe|blockquote">
+      <xsl:element name="{name()}">
+	<xsl:copy-of select="@*[name()!='environment']"/>
+        <xsl:apply-templates select="*|text()|comment()" />
+      </xsl:element>
+      <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="br|hr">
+        <xsl:copy-of select="current()"/>
+    </xsl:template>
+
+    <xsl:template match="webwork">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:value-of select="concat('@', name(), '{', @pg_file , '}')"/>
+    </xsl:template>
+
+    <xsl:template match="wb_image">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:value-of select="concat('@image', '{', @data-src , '}')"/>
+    </xsl:template>
+
     <xsl:template match="course|week|lecture|topic">
         <xsl:text>&#xa;</xsl:text>
-        <xsl:value-of select="concat('@', name(), '{', . , '}')"/>
+        <!-- <xsl:value-of select="concat('@', name(), '{', . , '}')"/> -->
+        <xsl:value-of select="concat('@', name(), '{')" /><xsl:apply-templates select="br|text()" /><xsl:text>}</xsl:text>
+        <!-- <xsl:value-of select="normalize-space(br|text())"/> -->
+        <!-- <xsl:value-of select="normalize-space(.)"/> -->
     </xsl:template>
 
     <xsl:template match="ref">

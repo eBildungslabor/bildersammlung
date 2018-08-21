@@ -29,7 +29,7 @@ function preparse($source_orig) {
   // $source_str = preg_replace('/(\n\n|\r\r|\r\n\r\n|(<p>(\r)*\n))@newcol/', "\n@linebreak\n@newcol", $source_str);
 
   //$source_str = preg_replace("/\n\s*\n/", "\n", $source_str);
-  //    $source_str = preg_replace("/\n\n/", "\n@linebreak\n", $source_str);
+  $source_str = preg_replace("/\n\s*\n/", "\n@linebreak\n", $source_str);
   //$source_str = preg_replace('/(\n\n|\r\r|\r\n\r\n)/', "\n@linebreak\n", $source_str);
   // echo $source_str;
 

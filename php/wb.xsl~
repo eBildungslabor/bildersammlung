@@ -3,15 +3,6 @@
     <xsl:output method="html"/>
     <xsl:template match="/">
         <xsl:apply-templates select="*" />
-        <!-- <xsl:element name="keywords">
-            <xsl:for-each select="//b[(@class != 'notkw') or not(@class)]">
-                <xsl:if test="not(contains(., 'Exercise'))">
-                    <xsl:element name="keyword">
-                        <xsl:value-of select="."/>
-                    </xsl:element>
-                </xsl:if>
-            </xsl:for-each>
-        </xsl:element> -->
     </xsl:template>
 
     <xsl:template match="slides/slide">
@@ -40,6 +31,9 @@
     <xsl:template match="statement">
         <p wbtag="ignore"/>
         <div>
+            <xsl:attribute name="class">
+                <xsl:text>statement</xsl:text>
+            </xsl:attribute>
             <xsl:attribute name="wbtag">
                 <xsl:value-of select="@wbtag"/>
             </xsl:attribute>
@@ -88,6 +82,9 @@
 
     <xsl:template match="substatement">
         <div>
+            <xsl:attribute name="class">
+                <xsl:text>substatement</xsl:text>
+            </xsl:attribute>
             <xsl:attribute name="wbtag">
                 <xsl:value-of select="@wbtag"/>
             </xsl:attribute>
@@ -110,6 +107,8 @@
             </blockquote>
         </div>
     </xsl:template>
+
+
 
     <xsl:template match="course|topic">
         <h2>
@@ -162,13 +161,18 @@
                         <xsl:value-of select="//statement[@label=current()]/@num"/>
                     </xsl:attribute>
                     <xsl:attribute name="class">
+                        <xsl:text>knowl</xsl:text>
+                    </xsl:attribute>
+                    <!-- <xsl:attribute name="knowl-src">
+                        <xsl:value-of select="//statement[@label=current()]/@num"/>
+                    </xsl:attribute> -->
+                    <!-- <xsl:attribute name="class">
                         <xsl:text>knowl id-ref</xsl:text>
-                    </xsl:attribute>
-                    <xsl:attribute name="refid">
+                    </xsl:attribute> -->
+                    <!-- <xsl:attribute name="refid">
                         <xsl:value-of select="concat('statement', //statement[@label=current()]/@chapter, '-', //statement[@label=current()]/@num)"/>
-                    </xsl:attribute>
+                    </xsl:attribute> -->
                     <!-- <xsl:attribute name="target">_blank</xsl:attribute> -->
-
                     <xsl:value-of select="concat(//statement[@label=current()]/@type, ' ', //statement[@label=current()]/@chapter, '.', //statement[@label=current()]/@num)"/>
                 </xsl:element>
             </xsl:when>
@@ -247,19 +251,20 @@
             </xsl:attribute>
             <!-- <xsl:value-of select="." disable-output-escaping="yes" /> -->
             <!-- <xsl:apply-templates select="*[not(self::paragraphs)]"/> -->
-            <xsl:apply-templates select="text()|ref|paragraphs|col|newcol|linebreak|br|ul|ol|li|b|qed|wiki"/>
+            <xsl:apply-templates select="text()|comment()|ref|paragraphs|col|newcol|linebreak|hr|br|ul|ol|li|b|qed|wiki|a|u|h1|h2|h3|h4|h5|table|th|thead|tr|td|steps|div|img|script|iframe|blockquote"/>
         </div>
+    </xsl:template>
+
+    <xsl:template match="ul|ol|li|b|a|u|h1|h2|h3|h4|h5|table|th|thead|tr|td|div|img|script|iframe|blockquote">
+        <!-- <xsl copy-of select="current()"/> -->
+        <xsl:element name="{name()}">
+            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates select="text()|comment()|*"/>
+        </xsl:element>
     </xsl:template>
 
     <xsl:template match="qed">
         <div style='width:100%;text-align:right;color:#428bc1' wbtag="qed">&#x25fc;&#xFE0E;</div>
-    </xsl:template>
-
-    <xsl:template match="ul|ol|li|b|a">
-        <xsl:element name="{name()}">
-            <xsl:copy-of select="@*"/>
-            <xsl:apply-templates select="text()|*"/>
-        </xsl:element>
     </xsl:template>
 
     <xsl:template match="hr|br">
@@ -336,16 +341,22 @@
     </xsl:template>
 
     <xsl:template match="webwork">
-        <br/>
-        <strong>WORK IN PROGRESS
-            <br/>
-            <xsl:value-of select="(@pgfile)"/>
-        </strong>
-        <!-- <xsl:apply-templates select="text()"/> -->
+        <xsl:element name="div">
+            <xsl:attribute name="class">
+                <xsl:text>webwork</xsl:text>
+            </xsl:attribute>
+            <xsl:copy-of select="@*"/>
+            <strong class="print">WeBWork </strong>
+            <xsl:value-of select="(@pg_file)"/>
+        </xsl:element>
     </xsl:template>
 
 
     <xsl:template match="text()">
         <xsl:value-of select="." disable-output-escaping="yes" />
+    </xsl:template>
+    <xsl:template match="comment()">
+      <xsl:copy-of select="current()"/>
+        <!-- <xsl:value-of select="." disable-output-escaping="yes" /> -->
     </xsl:template>
 </xsl:stylesheet>

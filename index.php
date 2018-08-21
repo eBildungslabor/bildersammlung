@@ -34,6 +34,12 @@ if(isset($matches['userdir'])) {
     <link href="js/knowlstyle.css" rel="stylesheet" type="text/css" />
     <script src="js/Base64.js" type="text/javascript"></script>
     <script src="js/knowl.js" type="text/javascript" ></script>
+    <script src="js/knowl.js" type="text/javascript" ></script>
+    <script src="js/knowl.js" type="text/javascript" ></script>
+    <!-- <script src="js/iframeResizer.contentWindow.js" type="text/javascript"></script>
+    <script src="js/ie8.polyfils.min.js" type="text/javascript"></script>
+    <script src="js/iframeResizer.min.js" type="text/javascript"></script> -->
+
     <!-- <script src="js/ace-builds-master/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script> -->
     <script src="js/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
@@ -51,8 +57,9 @@ if(isset($matches['userdir'])) {
 
     <link rel="stylesheet" href="styles_split.css" media="all">
 
-    <!-- <script type="text/javascript" src="../../js/MathJax-2.7.4/MathJax.js?config=TeX-AMS_CHTML"></script> -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <!--    <script type="text/javascript" src="../js/MathJax-2.7.4/MathJax.js?config=TeX-AMS_CHTML"></script>
+      -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS_CHTML"></script>
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
           skipStartupTypeset: false,
@@ -85,8 +92,9 @@ var Range = ace.require('ace/range').Range; // get reference to ace/range
 
 <script id='wb' type='text'><?php if(isset($_GET['wb'])) {
     echo file_get_contents($_GET['wb']);
-} else {
-    echo "";
+} elseif (!isset($_GET['xml'])) {
+    echo file_get_contents('default.wb');
+    $_GET['wb'] = 'default.wb';
 }
 ?>
 </script>
@@ -172,11 +180,9 @@ var Range = ace.require('ace/range').Range; // get reference to ace/range
                     <button id="render_icon" class="plain_button icon" style="font-weight:normal;font-size:2.5em;text-align:center;" onclick="$('#render_button').click();">↻</button>
                     <br/>
                     <div style="position:absolute;left:0;bottom:2%;width:100%;text-align:center;">
-                        <button id="latex_icon" class="plain_button icon" onclick="$('#wb_modal').modal('toggle');showLatex();" style="font-weight:bold;font-size:0.75em;text-align:center">LaTeX</button>
+                        <button id="latex_icon" class="plain_button icon" onclick="$('#wb_modal').modal('toggle');showLatex();" style="font-size:small;text-align:center;width:100%">LaTeX</button>
                         <br/>
-                        <button id="xml_icon" class="plain_button icon" onclick="$('#wb_modal').modal('toggle');showXML();" style="font-weight:bold;font-size:1em;text-align:center">
-                            <span style="font-size:normal">XML</span>
-                        </button>
+                        <button id="xml_icon" class="plain_button icon" onclick="$('#wb_modal').modal('toggle');showXML();" style="text-align:center">xml</button>
                     </div>
                 </div>
             </div>
@@ -216,9 +222,9 @@ var Range = ace.require('ace/range').Range; // get reference to ace/range
             <div id="menu_container" class="dropdown" >
                 <button id="test_button" class="btn btn-outline-info btn-xs dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&#9776;</button>
                 <div id="main_menu" class="dropdown-menu" aria-labelledby="test_button" >
-                    <button id="present_button" class="btn btn-outline-info btn-sm menu_button" type="present" onclick="$('#left_half').animate({marginLeft:'-25%'}, 200, 'linear', function() {$('#right_half').removeClass('compose_half').removeClass('dual_half');$('#right_half').addClass('page');$('#left_half').hide();$(this).css('margin-left','0');});$('#controls').show();$('#output').removeClass('output_dual');$('#full_screen_icon').hide();$('#output').addClass('text');$('.separator').hide();$(this).hide();$('#dual_button').show();$('#render_button').hide();$('.menu_button[type!=\'render\']').show();$(this).hide();$('.present').css('display','');$('#dual_icon').show();$('.slide_number').show();mode='present';showDivs(slideIndex);">Full Screen</button>
+                    <button id="present_button" class="btn btn-outline-info btn-sm menu_button" type="present" onclick="$('#left_half').animate({marginLeft:'-25%'}, 200, 'linear', function() {$('#right_half').removeClass('compose_half').removeClass('dual_half');$('#right_half').addClass('page');$('#left_half').hide();$(this).css('margin-left','0');});$('#controls').show();$('#output').removeClass('output_dual');$('#full_screen_icon').hide();$('#output').addClass('text');$('.separator').hide();$(this).hide();$('#dual_button').show();$('#render_button').hide();$('.menu_button[type!=\'render\']').show();$(this).hide();$('.present').css('display','');$('#dual_icon').show();$('.slide_number').show();mode='present';showDivs(slideIndex);$('#container').css('overflow-y', 'auto');$('.controls').show();">Full Screen</button>
 
-                    <button id="dual_button" type="button" style="width:100%;display:none" class="btn btn-outline-info btn-sm menu_button" type="dual" onclick="$('#left_half').show();$('#info_half').show();$('#left_half').removeClass('compose_half');$('#left_half').addClass('info_half');$('#input_container').hide();$('#right_half').removeClass('page');$('#right_half').removeClass('compose_half');$('#right_half').addClass('dual_half');$('#right_half').show();$('.slide').show();$('.slide').removeAttr('style');$('#controls').hide();$('#output').removeClass('text');$('#output').addClass('output_dual');$('.separator').show();$('#output_icon_container').show();$('#present_button').show();console.log('SLIDEINDEX: ' + slideIndex);$('#output').scrollTo($('#s' + slideIndex));$('#s' + slideIndex).click();$('.slide').css('height', 'auto');$('.slide_number').hide();$('#render_button').show();$('#render_button').hide();$('.menu_button').show();$(this).hide();$('.present').hide();$('body').removeClass('present');mode='dual'">Dual</button>
+                    <button id="dual_button" type="button" style="width:100%;display:none" class="btn btn-outline-info btn-sm menu_button" type="dual" onclick="$('#left_half').show();$('#info_half').show();$('#left_half').removeClass('compose_half');$('#left_half').addClass('info_half');$('#input_container').hide();$('#right_half').removeClass('page');$('#right_half').removeClass('compose_half');$('#right_half').addClass('dual_half');$('#right_half').show();$('.slide').show();$('.slide').removeAttr('style');$('#controls').hide();$('#output').removeClass('text');$('#output').addClass('output_dual');$('.separator').show();$('#output_icon_container').show();$('#present_button').show();console.log('SLIDEINDEX: ' + slideIndex);$('#output').scrollTo($('#s' + slideIndex));$('#s' + slideIndex).click();$('.slide').css('height', 'auto');$('.slide_number').hide();$('#render_button').show();$('#render_button').hide();$('.menu_button').show();$(this).hide();$('.present').hide();$('body').removeClass('present');$('.controls').hide();$('#container').css('overflow-y', 'hidden');mode='dual'">Dual</button>
 
                     <button id="compose_button" type="button" style="width:100%;" class="btn btn-outline-info btn-sm menu_button"  type="compose" onclick="$('#left_half').removeClass('info_half').addClass('compose_half');$('#info_half').hide();$('#left_half').show();$('#input_container').show();$('#right_half').removeClass('page');$('#right_half').removeClass('dual_half');$('#right_half').addClass('right').addClass('compose_half');$('.slide').show();$('.slide').removeAttr('style');$('#controls').hide();$('#output').removeClass('text');$('.separator').show();$('#output_icon_container').show();$('#present_button').show();$('#output').scrollTo($('#s' + slideIndex));$('.slide').css('height', 'auto');$('.slide_number').hide();$('#render_button').show();$('.menu_button[type!=\'compose\']').show();$(this).hide();$('.present').hide();mode='compose'">Compose</button>
 
@@ -243,9 +249,9 @@ var Range = ace.require('ace/range').Range; // get reference to ace/range
                         <input id="edit_box" type="checkbox" style="display:none" onchange="" />
                         <button type="button" id="edit_button" style="width:100%" class="btn btn-outline-info btn-sm submenu_button"  onclick="var box = document.getElementById('edit_box'); box.checked = !box.checked;showTypeset(box.checked);">Edit</button>
                         <input id="source_box" type="checkbox" style="display:none;" onchange="" />
-                        <button id="source_button" style="display:none" type="button"  class="btn btn-outline-danger btn-sm submenu_button" disabled="true" data-toggle="modal" data-target="wb_modal" onclick="$('#wb_modal').modal('toggle');showXML();">Source
-                        </button>
-                        <button id="wb_button" style="display:none;" class="btn btn-outline-info btn-sm submenu_button" onclick="commitWb();">Commit Wb</button>
+                        <!-- <button id="source_button" style="display:none" type="button"  class="btn btn-outline-danger btn-sm submenu_button" disabled="true" data-toggle="modal" data-target="wb_modal" onclick="$('#wb_modal').modal('toggle');showXML();">Source
+                        </button> -->
+                        <button id="wb_button" style="display:none;" class="btn btn-outline-info btn-sm submenu_button" onclick="commitWb();$('#compose_button').click();$('#edit_button').click();">Commit Wb</button>
                     </a>
                 </div>
                 <br/>
@@ -279,17 +285,16 @@ var Range = ace.require('ace/range').Range; // get reference to ace/range
                 <script>MathJax.Hub.Queue(["Typeset",MathJax.Hub,document.getElementById('preamble')]);</script>
             </div>
             <div id='output' class="output_dual"></div>
-            <div class="present title_box" style="display:none"></div>
-            <div id="cover_half" onclick="unhide();$('#hide').button('toggle')"></div>
-            <!-- <div id="cover_half" onclick="$('#hide').click()"></div> -->
-            <div id='controls' style="display:none">
-                <a id='left_button' href='javascript:void(0)' style='font-size:2em;position:fixed;top:45%;left:5%;color:SteelBlue' onclick='plusDivs(-1)'>&#x276e;</a>
-                <a id='right_button' href='javascript:void(0)' style='font-size:2em;position:fixed;top:45%;right:5%;color:SteelBlue' onclick='plusDivs(1)'>&#x276f;</a>
-
-                <a href='javascript:void(0)' id='unhide' style='position:fixed;top:5em;right:2%;color:#428bc1;display:none' onclick='unhide()'>Full Screen</a>
-            </div>
-            </div>
         </div>
+        <div class="present title_box" style="display:none"></div>
+        <div class="controls" style='font-size:2em;left:5%;width:auto;color:SteelBlue'>
+            <a id='left_button' href='javascript:void(0)' onclick='plusDivs(-1)'>&#x276e;</a>
+        </div>
+        <div class="controls" style='font-size:2em;right:5%;width:auto;color:SteelBlue'>
+            <a id='right_button' href='javascript:void(0)' onclick='plusDivs(1)'>&#x276f;</a>
+        </div>
+        <a href='javascript:void(0)' id='unhide' style='position:fixed;top:5em;right:2%;color:#428bc1;display:none' onclick='unhide()'>Full Screen</a>
+        <div id="cover_half" onclick="unhide();$('#hide').button('toggle')"></div>
     </div>
 
     <!-- Wb item modal -->
@@ -398,15 +403,21 @@ var Range = ace.require('ace/range').Range; // get reference to ace/range
     <?php } ?>
     <script type="text/javascript">
     var xmlString = $('#xml').html();
-    xmlString = xmlString.replace(/BEGINTAG/g,'<').replace(/ENDTAG/g, '>');
     console.log('XMLSTRING FROM XML DIV');
     console.log(xmlString);
 
     <?php if(isset($_GET['query'])) { ?>
+        // var xmlString = xmlString.replace(/xmlns=\"(.*?)\"/g, '');
+
         var oParser = new DOMParser();
         var oDom = oParser.parseFromString(xmlString, "application/xml");
 
+        console.log('XML DOM');
+        console.log(oDom);
+        console.log('END XML DOM');
+
         var queries = oDom.evaluate("<?php echo $_GET['query'];?>", oDom, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+        // var queries = oDom.evaluate("<?php echo $_GET['query'];?>", oDom, function() { return "http://www.w3.org/1999/xhtml";}, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
 
         var queryDom = document.implementation.createDocument("", "", null);
         var bare = queryDom.createElement("bare");
@@ -419,6 +430,10 @@ var Range = ace.require('ace/range').Range; // get reference to ace/range
         }
         queryDom.appendChild(bare);
         var queryResultString = new XMLSerializer().serializeToString(queryDom);
+        console.log('QUERY DOM');
+        console.log(queryDom);
+        console.log('END QUERY DOM');
+
         displayResult(queryResultString);
         <?php } else { ?>
             displayResult(xmlString);

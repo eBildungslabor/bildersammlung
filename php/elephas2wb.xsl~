@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <xsl:output method="xml" />
+
+    <xsl:template match="/">
+        <xsl:for-each select="/slides/slide">
+            <xsl:if test="position() != 1">
+                <xsl:text>&#xa;</xsl:text>
+            </xsl:if>
+            <xsl:text>@sep&#xa;</xsl:text>
+            <xsl:apply-templates select="*" />
+        </xsl:for-each>
+    </xsl:template>
+
+
+    <xsl:template match="paragraph" >
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:apply-templates select="*" />
+        <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="col|newcol" >
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:value-of select="concat('@', name())" />
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:apply-templates select="*" />
+        <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="statement|substatement">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:choose>
+            <xsl:when test="@type='Theorem'">
+                <xsl:text>@thm</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Corollary'">
+                <xsl:text>@cor</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Proposition'">
+                <xsl:text>@prop</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Claim'">
+                <xsl:text>@claim</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Lemma'">
+                <xsl:text>@lemma</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Example'">
+                <xsl:text>@eg</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Definition'">
+                <xsl:text>@def</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Exercise'">
+                <xsl:text>@ex</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Proof'">
+                <xsl:text>@proof</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Solution'">
+                <xsl:text>@sol</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Answer'">
+                <xsl:text>@ans</xsl:text>
+            </xsl:when>
+            <xsl:when test="@type='Notation'">
+                <xsl:text>@notation</xsl:text>
+            </xsl:when>
+        </xsl:choose>
+        <xsl:choose>
+            <xsl:when test="@label!=''">
+                <xsl:text>&#xa;</xsl:text>
+                <xsl:value-of select="concat('@label{', @label, '}')"/>
+            </xsl:when>
+        </xsl:choose>
+        <xsl:choose>
+            <xsl:when test="@title!=''">
+                <xsl:text>&#xa;</xsl:text>
+                <xsl:value-of select="concat('@title{', @title, '}')"/>
+            </xsl:when>
+        </xsl:choose>
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:apply-templates select="*" />
+        <xsl:text>&#xa;@end&#xa;</xsl:text>
+    </xsl:template>
+
+
+    <xsl:template match="p">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:element name="{name()}">
+            <xsl:copy-of select="*"/>
+            <xsl:apply-templates select="*|text()|comment()" />
+            <xsl:text>&#xa;</xsl:text>
+        </xsl:element>
+    </xsl:template>
+
+    <xsl:template match="ul|ol">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:element name="{name()}">
+            <xsl:apply-templates select="*|text()" />
+            <xsl:text>&#xa;</xsl:text>
+        </xsl:element>
+    </xsl:template>
+
+    <xsl:template match="col_ul">
+        <xsl:text>&#xa;@ul&#xa;</xsl:text>
+        <xsl:apply-templates select="*|text()" />
+        <xsl:text>&#xa;@endul&#xa;</xsl:text>
+    </xsl:template>
+    <xsl:template match="col_ol">
+        <xsl:text>&#xa;@ol&#xa;</xsl:text>
+        <xsl:apply-templates select="*|text()" />
+        <xsl:text>&#xa;@endol&#xa;</xsl:text>
+    </xsl:template>
+    <xsl:template match="col_li">
+        <xsl:text>&#xa;@li&#xa;</xsl:text>
+        <xsl:apply-templates select="*|text()" />
+        <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="h1|h2|h3|h4|h5">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:element name="{name()}">
+            <xsl:apply-templates select="*|text()" />
+        </xsl:element>
+        <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="b|strong|em|i">
+        <!-- <xsl:text> </xsl:text> -->
+        <xsl:element name="{name()}">
+            <xsl:apply-templates select="text()" />
+        </xsl:element>
+        <!-- <xsl:text> </xsl:text> -->
+    </xsl:template>
+
+    <xsl:template match="center|table|tbody|thead|th|tr|td|div|a|img|li|iframe|blockquote">
+      <xsl:element name="{name()}">
+        <xsl:apply-templates select="*|text()|comment()" />
+      </xsl:element>
+      <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="br|hr">
+        <xsl:copy-of select="current()"/>
+    </xsl:template>
+
+    <xsl:template match="webwork">
+        <xsl:text>&#xa;</xsl:text>
+        <xsl:value-of select="concat('@', name(), '{', @pg_file , '}')"/>
+    </xsl:template>
+
+    <xsl:template match="course|week|lecture|topic">
+        <xsl:text>&#xa;</xsl:text>
+        <!-- <xsl:value-of select="concat('@', name(), '{', . , '}')"/> -->
+        <xsl:value-of select="concat('@', name(), '{')" /><xsl:apply-templates select="br|text()" /><xsl:text>}</xsl:text>
+        <!-- <xsl:value-of select="normalize-space(br|text())"/> -->
+        <!-- <xsl:value-of select="normalize-space(.)"/> -->
+    </xsl:template>
+
+    <xsl:template match="ref">
+        <xsl:value-of select="concat(' @ref{', @label, '}')"/>
+    </xsl:template>
+
+    <xsl:template match="linebreak">
+        <xsl:text>&#xa;@linebreak&#xa;</xsl:text>
+    </xsl:template>
+    <xsl:template match="text()" >
+        <!-- <xsl:value-of select="normalize-space(.)" /> -->
+        <xsl:value-of select="." />
+    </xsl:template>
+    <xsl:template match="comment()" >
+        <!-- <xsl:value-of select="normalize-space(.)" /> -->
+        <xsl:comment>
+            <xsl:value-of select="." />
+        </xsl:comment>
+    </xsl:template>
+
+
+</xsl:stylesheet>
