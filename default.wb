@@ -98,7 +98,7 @@ then $f$ attains both a maximum value and a minimum value.
 Note that the collapsible element in the theorem is supposed to be ended by <code><span>@</span>endcol</code>.
 A collapsible sequence is not allowed to "straddle" the end of a theorem-like environment.
 <p></p>
-In this case, though the <code><span>@</span>endcol</code> tag is ommitted, the collapible sequence is ended automatically. The Elephas engine affords a rudimentary degree of fault tolerance (though perhaps not too much, at this juncture.)
+In this case, though the <code><span>@</span>endcol</code> tag is ommitted, the collapsible sequence is ended automatically. The Elephas engine affords a rudimentary degree of fault tolerance (though perhaps not too much, at this juncture.)
 
 
 
