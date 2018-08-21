@@ -1,5 +1,6 @@
 # Elephas
 
-A complete rewrite of Wb.  Most of the work is now done client-side instead of on the server.  
+Web browser based slideshow editor and presenter. Designed for math and science educators fluent in latex and html.
+A complete rewrite of the previous php-based Wb.  Most of the work is now done client-side instead of on the server.  
 
-Incorporated the Ace Editor into the composer.
+Users may edit slides using the embedded Ace Editor.
