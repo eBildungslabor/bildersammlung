@@ -26,6 +26,11 @@
         <xsl:apply-templates select="*" />
         <xsl:text>&#xa;</xsl:text>
     </xsl:template>
+    <xsl:template match="collapse" >
+        <xsl:text>&#xa;</xsl:text>@col<xsl:text>&#xa;</xsl:text>
+        <xsl:apply-templates select="*" />
+        <xsl:text>&#xa;</xsl:text>
+    </xsl:template>
 
     <xsl:template match="statement|substatement">
         <xsl:text>&#xa;</xsl:text>
@@ -126,7 +131,7 @@
         <xsl:text>&#xa;</xsl:text>
     </xsl:template>
 
-    <xsl:template match="b|strong|em|i">
+    <xsl:template match="b|strong|em|i|span">
         <!-- <xsl:text> </xsl:text> -->
         <xsl:element name="{name()}">
             <xsl:apply-templates select="text()" />
@@ -134,7 +139,7 @@
         <!-- <xsl:text> </xsl:text> -->
     </xsl:template>
 
-    <xsl:template match="center|table|tbody|thead|th|tr|td|div|a|img|li|iframe|blockquote">
+    <xsl:template match="pre|code|center|table|tbody|thead|th|tr|td|div|a|img|li|iframe|blockquote">
       <xsl:element name="{name()}">
 	<xsl:copy-of select="@*[name()!='environment']"/>
         <xsl:apply-templates select="*|text()|comment()" />
