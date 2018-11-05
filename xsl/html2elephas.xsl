@@ -44,9 +44,9 @@
             <xsl:copy-of select="@label"/>
             <xsl:copy-of select="@id"/>
             <xsl:copy-of select="@href"/>
-            <xsl:text>&#xa;</xsl:text>
+            <!-- <xsl:text>&#xa;</xsl:text> -->
             <xsl:apply-templates select="xh:*|text()" />
-            <xsl:text>&#xa;</xsl:text>
+            <!-- <xsl:text>&#xa;</xsl:text> -->
         </xsl:element>
         <xsl:if test="@wbtag!='ref'">
             <xsl:text>&#xa;</xsl:text>
@@ -134,7 +134,7 @@
         <xsl:text>&#xa;</xsl:text>
     </xsl:template> -->
 
-    <xsl:template match="xh:span|xh:code|xh:pre|xh:b|xh:h1|xh:h2[not(@metadata)]|xh:h3|xh:h4|xh:h5|xh:p|xh:strong|xh:em|xh:table|xh:tbody|xh:th|xh:tr|xh:td|xh:div|xh:a|xh:i|xh:img|xh:ul|xh:ol|xh:li|xh:center|xh:blockquote|xh:iframe|xh:br|xh:hr">
+    <xsl:template match="xh:span|xh:code|xh:pre|xh:b[not(@wbtag)]|xh:h1|xh:h2[not(@metadata)]|xh:h3|xh:h4|xh:h5|xh:p|xh:strong|xh:em|xh:u|xh:table|xh:tbody|xh:th|xh:tr|xh:td|xh:div|xh:a|xh:i|xh:img|xh:ul|xh:ol|xh:li|xh:center|xh:blockquote|xh:iframe|xh:br|xh:hr">
       <xsl:element name="{name()}">
           <xsl:copy-of select="@*"/>
           <xsl:apply-templates select="xh:*|text()|comment()" />

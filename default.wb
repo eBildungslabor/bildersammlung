@@ -45,7 +45,7 @@ Third.
 </pre>
 <br>
 gives:
-
+<div style="border: 1px solid #bbb;border-radius:10px;padding:10px">
 @newcol
 First collapsed element.
 
@@ -54,6 +54,7 @@ Second collapsed element.
 @col
 Third.
 @endcol.
+</div>
 
 (Notice the effect of a blank line before the <code><span>@</span>col</code> tag.)
 @sep
@@ -79,6 +80,8 @@ then $f$ attains a maximum and minimum.
 <span>@</span>end
 </pre>
 gives:
+@col
+<div style="border: 1px solid #bbb;border-radius:10px;padding:10px">
 @def
 A function $f : \mathbb{R} \longrightarrow \mathbb{R}$ 
 is said to be <b>continuous</b> at $c \in \mathbb{R}$ if:
@@ -95,6 +98,7 @@ is continuous everywhere,
 @col
 then $f$ attains both a maximum value and a minimum value.
 @end
+</div>
 Note that the collapsible element in the theorem is supposed to be ended by <code><span>@</span>endcol</code>.
 A collapsible sequence is not allowed to "straddle" the end of a theorem-like environment.
 <p></p>

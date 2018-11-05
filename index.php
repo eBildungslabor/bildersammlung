@@ -34,11 +34,9 @@ if(isset($matches['userdir'])) {
     <link href="js/knowlstyle.css" rel="stylesheet" type="text/css" />
     <script src="js/Base64.js" type="text/javascript"></script>
     <script src="js/knowl.js" type="text/javascript" ></script>
-    <script src="js/knowl.js" type="text/javascript" ></script>
-    <script src="js/knowl.js" type="text/javascript" ></script>
-    <!-- <script src="js/iframeResizer.contentWindow.js" type="text/javascript"></script>
+    <script src="js/iframeResizer.contentWindow.min.js" type="text/javascript"></script>
     <script src="js/ie8.polyfils.min.js" type="text/javascript"></script>
-    <script src="js/iframeResizer.min.js" type="text/javascript"></script> -->
+    <script src="js/iframeResizer.min.js" type="text/javascript"></script>
 
     <!-- <script src="js/ace-builds-master/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script> -->
     <script src="js/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -161,28 +159,28 @@ var Range = ace.require('ace/range').Range; // get reference to ace/range
                 </div>
                 <div id="edit_menu_container">
                     <!-- <button id="maximize_icon" class="plain_button icon" onclick="$('#left_half').css('width', '100%');editor.resize();$('#normalize_icon').show();$(this).hide();"></button> -->
-                    <input type="image" id="maximize_icon" src="icons/Maximize_Icon.svg" class="plain_button icon" onclick="$('#right_half').hide();$('#left_half').css('width', '100%');editor.resize();$('#normalize_icon').show();$(this).hide();"/>
+                    <input type="image" id="maximize_icon" src="icons/Maximize_Icon.svg" class="plain_button icon" onclick="$('#right_half').hide();$('#left_half').css('width', '100%');editor.resize();$('#normalize_icon').show();$(this).hide();" data-toggle="tooltip" data-placement="right" title="Maximize composer"/>
                     <!-- <button id="normalize_icon"  class="plain_button icon" onclick="$('#left_half').css('width', '');editor.resize();$('#maximize_icon').show();$(this).hide();"></button> -->
-                    <input type="image" id="normalize_icon"  src="icons/Normalize_Icon.svg" class="plain_button icon" onclick="$('#right_half').show();$('#left_half').css('width', '');editor.resize();$('#maximize_icon').show();$(this).hide();"/>
+                    <input type="image" id="normalize_icon"  src="icons/Normalize_Icon.svg" class="plain_button icon" onclick="$('#right_half').show();$('#left_half').css('width', '');editor.resize();$('#maximize_icon').show();$(this).hide();" data-toggle="tooltip" data-placement="right" title="Normal size"/>
                     <br/>
-                    <button id="close_icon" class="plain_button icon" onclick="$('#normalize_icon').click();$('#dual_button').click();$('#container').css('overflow-y', '');">&times;</button>
+                    <button id="close_icon" class="plain_button icon" onclick="$('#normalize_icon').click();$('#dual_button').click();$('#container').css('overflow-y', '');" data-toggle="tooltip" data-placement="right" title="Close composer">&times;</button>
                     <br/>
                     <label for="fileInput">
-                        <img id="open_icon" class="exempt icon" src="icons/File_Open.svg"/>
+                        <img id="open_icon" class="exempt icon" src="icons/File_Open.svg" data-toggle="tooltip" data-placement="right" title="Open file"/>
                         <!-- <button id="open_icon" class="plain_button icon"/> -->
                         <input id="fileInput" type="file" onchange="openWb(this);" style="display:none">
                     </label>
                     <!-- <br/>
                     <input type="image" src="icons/Save_Icon.svg" id="save_icon" class="plain_button icon" onclick="saveWb();"/> -->
                     <br/>
-                    <button id="save_icon" class="plain_button icon" style="font-weight:normal;font-size:1.5em;text-align:center;" onclick="saveWb();">⬇︎</button>
+                    <button id="save_icon" class="plain_button icon" style="font-weight:normal;font-size:1.5em;text-align:center;" onclick="saveWb();" data-toggle="tooltip" data-placement="right" title="Save">⬇︎</button>
                     <br/>
-                    <button id="render_icon" class="plain_button icon" style="font-weight:normal;font-size:2.5em;text-align:center;" onclick="$('#render_button').click();">↻</button>
+                    <button id="render_icon" class="plain_button icon" style="font-weight:normal;font-size:2.5em;text-align:center;" onclick="$('#render_button').click();" data-toggle="tooltip" data-placement="right" title="Render Slides">↻</button>
                     <br/>
                     <div style="position:absolute;left:0;bottom:2%;width:100%;text-align:center;">
-                        <button id="latex_icon" class="plain_button icon" onclick="$('#wb_modal').modal('toggle');showLatex();" style="font-size:small;text-align:center;width:100%">LaTeX</button>
+                        <button id="latex_icon" class="plain_button icon" onclick="$('#wb_modal').modal('toggle');showLatex();" style="font-size:small;text-align:center;width:100%" data-toggle="tooltip" data-placement="right" title="LaTex source">LaTeX</button>
                         <br/>
-                        <button id="xml_icon" class="plain_button icon" onclick="$('#wb_modal').modal('toggle');showXML();" style="text-align:center">xml</button>
+                        <button id="xml_icon" class="plain_button icon" onclick="$('#wb_modal').modal('toggle');showXML();" style="text-align:center" data-toggle="tooltip" data-placement="right" title="XML source">xml</button>
                     </div>
                 </div>
             </div>

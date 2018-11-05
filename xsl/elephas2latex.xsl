@@ -11,64 +11,66 @@
    </xsl:template>
 
 <xsl:template name="latex-preamble">
-\usepackage[T1]{fontenc}&#xa;
-\usepackage{times}&#xa;
-\usepackage{amsthm}&#xa;
-\usepackage{amscd,amssymb,stmaryrd}&#xa;
-\usepackage{amsmath}&#xa;
-\usepackage{graphicx}&#xa;
-\usepackage{fancybox}&#xa;
-\usepackage{amstext}&#xa;
-\usepackage{color}&#xa;
-\usepackage{mathtools}&#xa;
-\usepackage{pdflscape}&#xa;
-\usepackage{listings}&#xa;
-\usepackage{epic,eepic} &#xa;
-\usepackage{fancyhdr}&#xa;
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{amsthm}
+\usepackage{amscd,amssymb,stmaryrd}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{fancybox}
+\usepackage{amstext}
+\usepackage{color}
+\usepackage{mathtools}
+\usepackage{pdflscape}
+\usepackage{listings}
+\usepackage{epic,eepic}
+\usepackage{fancyhdr}
 \usepackage{hyperref}
 \usepackage[capitalise]{cleveref}
-<!-- \usepackage{booktabs}&#xa; -->
+<!-- \usepackage{booktabs} -->
 
-\newcommand{\abs}[1]{\left|#1\right|}&#xa;
-\newcommand{\ds}{\displaystyle}&#xa;
-\newcommand{\ol}[1]{\overline{#1}}&#xa;
-\newcommand{\oll}[1]{\overline{\overline{#1}}}&#xa;
-\newcommand{\bs}{\backslash}&#xa;
-\newcommand{\Frac}{\mathrm{Frac}}&#xa;
-\newcommand{\im}{\mathrm{im}\,}&#xa;
-\newcommand{\ZZ}{\mathbb{Z}}&#xa;
-\newcommand{\ra}{\longrightarrow}&#xa;
-\newcommand{\ord}{\mathrm{ord}\,}&#xa;
-\newcommand{\GL}{{\rm GL}}&#xa;
-\newcommand{\SL}{{\rm SL}}&#xa;
-\newcommand{\SO}{{\rm SO}}&#xa;
-\newcommand{\colvec}[1]{\begin{pmatrix}#1\end{pmatrix}}&#xa;
-\newcommand{\Span}{{\rm Span}\,}&#xa;
-\newcommand{\Rank}{{\rm Rank}\,}&#xa;
-\newcommand{\nullity}{{\rm nullity}\,}&#xa;
-\newcommand{\adj}{{\rm adj}\,}&#xa;
-\newcommand{\Proj}{{\rm Proj}}&#xa;
-\newcommand{\ora}{\overrightarrow}&#xa;
-\newcommand{\ve}{\varepsilon}&#xa;
-\newcommand{\phib}{\ol{\phi}}&#xa;
-\renewcommand{\ord}{\mathrm{ord}\,}&#xa;
-\newtheorem{thm}[equation]{Theorem}&#xa;
-\newtheorem{prop}[equation]{Proposition}&#xa;
-\newtheorem{defn}[equation]{Definition}&#xa;
-\newtheorem{lemma}[equation]{Lemma}&#xa;
-\newtheorem{claim}[equation]{Claim}&#xa;
-\newtheorem{cor}[equation]{Corollary}&#xa;
-\theoremstyle{remark}&#xa;
-\newtheorem{example}[equation]{\bf Example}&#xa;
-\newtheorem{eg}[equation]{\bf Example}&#xa;
-\newtheorem{ex}[equation]{\bf Exercise}&#xa;
-\newtheorem*{notation}{\bf Notation}&#xa;
-\newtheorem*{remark}{\bf Remark}&#xa;
-\numberwithin{equation}{chapter}&#xa;
-<!-- \renewcommand{\thesubsection}{\thechapter.\arabic{subsection}}&#xa; -->
-\renewcommand{\thesubsection}{}&#xa;
-<!-- \renewcommand{\thesection}{\arabic{section}}&#xa; -->
-\renewcommand{\thesection}{}&#xa;
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\oll}[1]{\overline{\overline{#1}}}
+\newcommand{\bs}{\backslash}
+\newcommand{\Frac}{\mathrm{Frac}}
+\newcommand{\im}{\mathrm{im}\,}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\ra}{\longrightarrow}
+\newcommand{\ord}{\mathrm{ord}\,}
+\newcommand{\GL}{{\rm GL}}
+\newcommand{\SL}{{\rm SL}}
+\newcommand{\SO}{{\rm SO}}
+\newcommand{\colvec}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\Span}{{\rm Span}\,}
+\newcommand{\Rank}{{\rm Rank}\,}
+\newcommand{\nullity}{{\rm nullity}\,}
+\newcommand{\adj}{{\rm adj}\,}
+\newcommand{\Proj}{{\rm Proj}}
+\newcommand{\ora}{\overrightarrow}
+\newcommand{\ve}{\varepsilon}
+\newcommand{\phib}{\ol{\phi}}
+\renewcommand{\ord}{\mathrm{ord}\,}
+\newtheorem{thm}[equation]{Theorem}
+\newtheorem{prop}[equation]{Proposition}
+\newtheorem{defn}[equation]{Definition}
+\newtheorem{lemma}[equation]{Lemma}
+\newtheorem{claim}[equation]{Claim}
+\newtheorem{cor}[equation]{Corollary}
+\newtheorem{fact}[equation]{Fact}
+\theoremstyle{remark}
+\newtheorem{example}[equation]{\bf Example}
+\newtheorem{eg}[equation]{\bf Example}
+\newtheorem{ex}[equation]{\bf Exercise}
+\newtheorem*{notation}{\bf Notation}
+\newtheorem*{sol}{\bf Solution}
+\newtheorem*{remark}{\bf Remark}
+\numberwithin{equation}{chapter}
+<!-- \renewcommand{\thesubsection}{\thechapter.\arabic{subsection}} -->
+\renewcommand{\thesubsection}{}
+<!-- \renewcommand{\thesection}{\arabic{section}} -->
+\renewcommand{\thesection}{}
 </xsl:template>
 
     <xsl:template match="/slides/slide">
@@ -76,7 +78,7 @@
         <xsl:apply-templates select="*" />
     </xsl:template>
 
-    <xsl:template match="keywords|keyword"/>
+    <xsl:template match="keywords|keyword|hc_keyword"/>
 
     <xsl:template match="course">
         <xsl:text>&#xa;</xsl:text>
@@ -125,6 +127,14 @@
         <xsl:value-of select="@wbtag"/>
         <xsl:text>}</xsl:text>
         <xsl:choose>
+            <xsl:when test="@title">
+                <xsl:text>[</xsl:text>
+                <xsl:value-of select="@title"/>
+                <xsl:text>]&#xa;</xsl:text>
+            </xsl:when>
+        </xsl:choose>
+
+        <xsl:choose>
             <xsl:when test="@label">
                 <xsl:text>&#xa;\label{</xsl:text>
                 <xsl:value-of select="@label"/>
@@ -146,14 +156,14 @@
     </xsl:template> -->
 
     <xsl:template match="ul|col_ul">
-        <xsl:text>&#xa;\quad\\</xsl:text>
+        <xsl:text>&#xa;\quad\\&#xa;</xsl:text>
         <xsl:text>\begin{itemize}</xsl:text>
         <xsl:apply-templates select="*" />
         <xsl:text>\end{itemize}</xsl:text>
     </xsl:template>
 
     <xsl:template match="ol|col_ol">
-        <xsl:text>&#xa;\quad\\</xsl:text>
+        <xsl:text>&#xa;\quad\\&#xa;</xsl:text>
         <xsl:text>\begin{enumerate}</xsl:text>
         <xsl:apply-templates select="*" />
         <xsl:text>\end{enumerate}</xsl:text>
@@ -214,6 +224,14 @@
         <xsl:text>&#xa;\quad\\\hrule&#xa;\quad\\&#xa;</xsl:text>
     </xsl:template>
 
+
+    <xsl:template match="u">
+        <!-- <xsl:text> </xsl:text> -->
+        <xsl:text> \underline{ </xsl:text>
+            <xsl:apply-templates select="*|text()" />
+        <xsl:text>} </xsl:text>
+    </xsl:template>
+
     <xsl:template match="b|strong|em">
         <!-- <xsl:text> </xsl:text> -->
         <xsl:text> {\bf </xsl:text>
@@ -226,7 +244,7 @@
     </xsl:template>
 
     <xsl:template match="linebreak|br">
-        <xsl:text>&#xa;</xsl:text>
+        <xsl:text>&#xa;&#xa;&#xa;</xsl:text>
     </xsl:template>
     <xsl:template match="text()" >
         <!-- <xsl:value-of select="normalize-space(.)" /> -->

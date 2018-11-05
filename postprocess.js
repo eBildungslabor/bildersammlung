@@ -15,9 +15,10 @@
 //
 // });
 
-function resizeIframe(obj) {
-   obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
- }
+// function resizeIframe(obj) {
+//    obj.style.height = obj.contentWindow.document.body.scrollHeight + "px";
+//    // obj.style.height = obj.contentWindow.document.body.offsetHeight + 'px';
+//  }
 
 function resetHighlight() {
     lines = editor.getSession().doc.getAllLines();
@@ -35,7 +36,7 @@ function resetHighlight() {
                 // console.log('SEP');
                 slideCount++;
                 slideLine[slideCount] = i + 1;
-                // console.log('slideLine: ' + slideCount + ' ' + slideLine[slideCount]);
+                console.log('slideLine: ' + slideCount + ' ' + slideLine[slideCount]);
             }
     }
 }
@@ -139,9 +140,16 @@ function postprocess() {
         // html += '<br/><a>' + $(this).attr('type') + ' ' + $(this).attr('chapter') + '.' + $(this).attr('num') + '</a>';
     });
 
+    if (xmlSrc != "") {
+        var url = rootURL + '?xml=' + xmlSrc;
+    } else {
+        var url = rootURL + '?wb=' + wbSrc;
+    }
+
     var html = '';
     for (var key in statements) {
-        html += '<br/><span class="info_statements">' + key + '</span><em> ' + statements[key] + '</em>';
+        // html += '<br/><span class="info_statements">' + key + '</span><em> ' + statements[key] + '</em>';
+        html += '<br/><a class="info_statements" target="_blank" href="' + url + '&query=//statement[@type=%27' + key + '%27]">' + key + '</a><em> ' + statements[key] + '</em>';
     }
     $('#info_statements').html(html);
 
@@ -252,7 +260,7 @@ function postprocess() {
 
         var html = '';
 
-        $('#item_modal').find('#modal_keywords').html('<hr><b class=notkw>Keywords:</b>'+ keywords($(this).closest('.slide')[0]));
+        $('#item_modal').find('#modal_keywords').html('<hr><b class="notkw">Keywords:</b>'+ keywords($(this).closest('.slide')[0]));
 
     });
 
@@ -330,19 +338,22 @@ function postprocess() {
 
         console.log('PGFILE');
         console.log(pgFile);
-        showWW(pgFile, ww_id);
+        iframeWW(pgFile, ww_id);
 
-        $('#ww_inner_' + ww_id).click(function() {
-            $('#ww_modal').modal('toggle');
-            showModalWW(ww_id);
-        });
+        // showWW(pgFile, ww_id);
+        // $('#ww_inner_' + ww_id).click(function() {
+        //     $('#ww_modal').modal('toggle');
+        //     showModalWW(ww_id);
+        // });
     });
 
     $('title').html(course + ' ' + chapterType + ' ' + chapter)
 
-    $('iframe').on('load', function(){
-        resizeIframe(this);
-        $(this).contents().find('html').css('font-family', 'menlo,sans-serif');
+    $('iframe').each(function(){
+        // resizeIframe(this);
+        //$(this).iFrameResize([{heightCalculationMethod:'documentElementScroll'}]);
+        $(this).iFrameResize();
+        //$(this).contents().find('html').css('font-family', 'menlo,sans-serif');
     });
 
     MathJax.Hub.Queue(

@@ -161,6 +161,10 @@
         <xsl:value-of select="concat('@image', '{', @data-src , '}')"/>
     </xsl:template>
 
+    <xsl:template match="hc_keyword">
+        <xsl:value-of select="concat('@', 'keyword', '{')" /><xsl:value-of select="."/><xsl:text>} </xsl:text>
+    </xsl:template>
+
     <xsl:template match="course|week|lecture|topic">
         <xsl:text>&#xa;</xsl:text>
         <!-- <xsl:value-of select="concat('@', name(), '{', . , '}')"/> -->

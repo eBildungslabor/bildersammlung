@@ -432,7 +432,8 @@ function print() {
     $('#print_content').find('.statement').after('<hr/>');
     $('#print_content').find('.substatement').after('<hr/>');
 
-    $('#print_content').find('.separator').hide();
+    // $('#print_content').find('.separator').hide();
+    $('#print_content').find('.separator').html(".&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp.&nbsp&nbsp&nbsp&nbsp.");
     $('#print_content').find('blockquote').each(function() {
         $(this).after($(this).html());
         $(this).remove();
@@ -789,7 +790,7 @@ function showLatex() {
             console.log(fragment);
             fragmentStr = new XMLSerializer().serializeToString(fragment);
             $('#source_text').val('');
-            var latex = fragmentStr.replace(/\n\n+/g, "\n");
+            var latex = fragmentStr.replace(/\n\n\n+/g, "\n\n");
             latex = latex.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
             latex = latex.replace(/\<!--.*?--\>/g, '');
             latex = latex.replace(/&amp;/g, "&");
@@ -1018,6 +1019,7 @@ function sendText(data, source_div) {
 function showWW(pgpath, id) {
 //    $("#ww_inner_" + id).empty();
     $.ajax({
+	// url: 'https://www.math.cuhk.edu.hk/~pschan/elephas/ww/repeater.php?id=' + id,
 	url: 'ww/repeater.php?id=' + id,
 	data: "sourceFilePath=" + pgpath,
 	type: 'POST',
@@ -1045,6 +1047,12 @@ function showWW(pgpath, id) {
 	}
     })
 
+}
+
+function iframeWW(pgpath, id) {
+    $("#ww_inner_" + id).find('.loading_icon').remove();
+    // $("#ww_inner_" + id).html("<iframe scrolling='no' src='http://webwork.math.cuhk.edu.hk/webwork2/html2xml?sourceFilePath=" + pgpath + "&answersSubmitted=0&problemSeed=123567890&displayMode=MathJax&courseID=daemon_course&userID=daemon&course_password=daemon&outputformat=simple'></iframe>");
+    $("#ww_inner_" + id).html("<iframe scrolling='no' src='https://demo.webwork.rochester.edu/webwork2/html2xml?sourceFilePath=" + pgpath + "&answersSubmitted=0&problemSeed=123567890&displayMode=MathJax&courseID=daemon_course&userID=daemon&course_password=daemon&outputformat=simple'></iframe>");
 }
 
 function showModalWW(id) {
@@ -1166,7 +1174,7 @@ function imagePostprocess(image) {
         if (width > height) {
             if (width > 600) {
                 $(image).css('width', '100%');
-                $(image).css('height', 'auto');
+                $(image).css('max-height', '100%');
             } else {
                 $(image).css('max-width', '100%');
                 $(image).css('height', 'auto');
@@ -1175,7 +1183,7 @@ function imagePostprocess(image) {
             if (height > 560) {
                 if (($(image).closest('.dual-left').length > 0) || ($(image).closest('.dual-right').length > 0)) {
                     $(image).css('width', '100%');
-                    $(image).css('height', 'auto');
+                    $(image).css('max-height', '100%');
                 } else {
                     if((typeof $(image).closest('.image').css('width') === typeof undefined)|| ($(image).closest('.image').css('width') === false) || ($(image).closest('.image').css('width') === '0px') || (image_width == '600px')){
                         $(image).css('height', '560px');
@@ -1231,7 +1239,7 @@ function keywords(node) {
             }
         });
 
-        html += '<button type="button" class="btn btn-outline-info btn-sm" style="margin-left:5px;margin-top:5px" data-html=true data-container="body" data-toggle="popover"  data-placement="bottom" data-content="' + links + '">' + keywords[i].replace(/[^a-zA-Z0-9\$]$/g, '') + '</button>';
+        html += '<button type="button" class="btn btn-outline-info btn-sm" style="margin-left:5px;margin-top:5px" data-html=true data-container="body" data-toggle="popover"  data-placement="bottom" data-content="' + links + '">' + keywords[i].replace(/[^\(\)a-zA-Z0-9\$]$/g, '') + '</button>';
     }
 
     return html;

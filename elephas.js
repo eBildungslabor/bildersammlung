@@ -12,6 +12,7 @@ var dictionary = {
     "@proof": "Proof",
     "@ans": "Answer",
     "@sol": "Solution",
+    "@notation": "Notation",
     "@paragraphs": "Paragraphs",
     "@col": "col",
     "@newcol": "newcol"
@@ -189,17 +190,18 @@ function generateXML() {
             console.log('IN ANCHOR' + word);
         }
 
-        var matches = word.match(/((@|#)\w+)(?:{(.*)})*/);
-        if (matches && !(in_anchor)) {
+        var matches = word.match(/((@|#)\w+)({(.*)})*/);
+        if ((matches && !(in_anchor)) || (matches && (matches[1] == '@image'))) {
             word = matches[1];
-            tagname = word.substr(1);
-            console.log('TAGS WITH ARGS' + originalWord + ' ' + word);
+            var tagname = word.substr(1);
             var re = new RegExp(word + '{(.*?)}');
             var matches = originalWord.trim().match(re);
             if (matches) {
                 var argument = matches[1];
+                console.log('TAGS WITH ARGS ' + tagname + ' ' + argument + ' ');
             }
         }
+
         if (word.match(/\<\/a\>/g)) {
             in_anchor = false;
             console.log('CLOSE ANCHOR' + word);
@@ -448,13 +450,13 @@ function generateXML() {
                 child = child.close();
             }
             break;
-            case "@keywords":
-            // child = child.closeTo(/slide/);
-            child = child.addChild('keywords');
-            child.node.setAttribute("chapter", chapter);
-            child.node.textContent = ' ';
-            child = child.close();
-            break;
+            // case "@keywords":
+            // // child = child.closeTo(/slide/);
+            // child = child.addChild('keywords');
+            // child.node.setAttribute("chapter", chapter);
+            // child.node.textContent = ' ';
+            // child = child.close();
+            // break;
             case "@steps":
             stepsID++;
             child = child.addChild("steps");
@@ -501,6 +503,22 @@ function generateXML() {
             console.log(originalWord);
             // child.node.textContent += '<ref label="' + matches[2] + '" wbtag="ref"></ref>';
             break;
+            case "@href":
+            if (child.node.nodeName != "paragraphs") {
+                child = child.addChild("paragraphs");
+                child.node.setAttribute("wbtag", "paragraphs");
+            }
+            child.node.textContent += '<a target="_blank" href="' + argument + '">' + argument + '</a>';
+            break;
+            case "@keyword":
+            var slide = child.getParent(/slide/);
+            var kw = slide.addChild("hc_keyword");
+            // child = child.addChild("hc_keyword");
+            kw.node.setAttribute("wbtag", "hc_keyword");
+            kw.node.setAttribute("class", "hidden");
+            kw.node.textContent += argument;
+            kw.close();
+            break;
             default:
             if (child.node.nodeName != "paragraphs") {
                 child = child.addChild("paragraphs");
@@ -527,8 +545,8 @@ function generateXML() {
     var xmlString = new XMLSerializer().serializeToString(xml);
     xmlString = xmlString.replace(/@ref{(.*?)}/g, '<ref wbtag="ref" label="$1">$1</ref>');
 
-    xmlString = xmlString.replace(/&lt;((table|tbody|thead|th|tr|td|i|em|p|a|b|strong|(h\d)|div|img|center|script|iframe|blockquote|ol|ul|li|sup|code|hr|span)\s*.*?)&gt;/g, '<$1>');
-    xmlString = xmlString.replace(/&lt;\/((table|tbody|thead|th|tr|td|i|em|p|a|b|strong|(h\d)|div|img|center|script|iframe|blockquote|ol|ul|li|sup|code|hr|span)\s*.*?)&gt;/g, '<\/$1>');
+    xmlString = xmlString.replace(/&lt;((table|tbody|thead|th|tr|td|i|em|p|a|b|strong|u|(h\d)|div|img|center|script|iframe|blockquote|ol|ul|li|sup|code|hr|span|iframe)\s*.*?)&gt;/g, '<$1>');
+    xmlString = xmlString.replace(/&lt;\/((table|tbody|thead|th|tr|td|i|em|p|a|b|strong|u|(h\d)|div|img|center|script|iframe|blockquote|ol|ul|li|sup|code|hr|span|iframe)\s*.*?)&gt;/g, '<\/$1>');
 
     xmlString = xmlString.replace(/&lt;!--/g, '<!--');
     xmlString = xmlString.replace(/--&gt;/g, '-->');

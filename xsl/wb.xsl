@@ -221,6 +221,13 @@
         </span>
     </xsl:template>
 
+    <xsl:template match="hc_keyword">
+        <b class="hidden">
+            <xsl:copy-of select="@*"/>
+            <xsl:value-of select="."/>
+        </b>
+    </xsl:template>
+
     <xsl:template match="newcol|collapse">
         <a class="collapsea collapsed" contenteditable="false" data-toggle="collapse" aria-expanded="false" wbtag="ignore">
             <xsl:attribute name="aria-controls">
@@ -249,14 +256,11 @@
             <xsl:attribute name="wbtag">
                 <xsl:text>paragraphs</xsl:text>
             </xsl:attribute>
-            <!-- <xsl:value-of select="." disable-output-escaping="yes" /> -->
-            <!-- <xsl:apply-templates select="*[not(self::paragraphs)]"/> -->
-            <!-- <xsl:apply-templates select="text()|comment()|ref|paragraphs|col|newcol|linebreak|hr|br|ul|ol|li|b|qed|wiki|a|u|h1|h2|h3|h4|h5|table|tbody|th|thead|tr|td|steps|p|div|img|script|iframe|blockquote"/> -->
             <xsl:apply-templates select="text()|comment()|*"/>
         </div>
     </xsl:template>
 
-    <xsl:template match="ul|ol|li|b|strong|i|em|a|u|h1|h2|h3|h4|h5|table|tbody|th|thead|tr|td|p|div|img|script|iframe|blockquote|sup|code|pre|center|span">
+    <xsl:template match="ul|ol|li|b|strong|i|em|a|u|h1|h2|h3|h4|h5|table|tbody|th|thead|tr|td|p|div|img|script|iframe|blockquote|sup|code|pre|center|span|iframe">
         <!-- <xsl copy-of select="current()"/> -->
         <xsl:element name="{name()}">
             <xsl:copy-of select="@*"/>
@@ -359,7 +363,6 @@
             <!-- <xsl:value-of select="(@pg_file)"/> -->
         </xsl:element>
     </xsl:template>
-
 
     <xsl:template match="wb_image">
         <xsl:element name="div">

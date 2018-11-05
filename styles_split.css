@@ -25,10 +25,11 @@ textarea {
 }
 
 iframe {
+    position:relative;
     border:0;
     width:100%;
-    margin:auto;
-/* background:url(Loading_icon.gif) center center no-repeat; */
+    /* margin:auto; */
+    /* background:url(Loading_icon.gif) center center no-repeat; */
 }
 
 iframe:after {
@@ -62,6 +63,10 @@ background:url(../Loading_icon.gif) center center no-repeat;
     height:100%;
     padding:0;
     margin-top:0;
+}
+
+.hidden {
+display:none;
 }
 
 .left.info_half {
@@ -279,7 +284,7 @@ display: none;
 }
 
 .slide_button {
-    color:SteelBlue;
+    color:Black;
 }
 
 .slide_mask {
@@ -499,6 +504,7 @@ height:auto;
 width:17cm;
 margin:auto;
 overflow-x:auto;
+overflow-y:hidden;
 }
 
 .slide_container_comments {
@@ -513,6 +519,7 @@ clear:left;
 width:100%;
 height:auto;
 overflow-x:auto;
+overflow-y:hidden;
 padding:0;
 }
 
@@ -548,7 +555,7 @@ text-align:center;
 max-width:600px;
 }
 
-.image a:after {
+.image > a:after {
     content:"\a";
     white-space: pre;
 }
@@ -558,12 +565,12 @@ img:after {
     white-space: pre;
 }
 
-.dual-left a:after {
+.dual-left > a:after {
     content:"\a";
     white-space: pre;
 }
 
-.dual-right a:after {
+.dual-right > a:after {
     content:"\a";
     white-space: pre;
 }
@@ -612,7 +619,7 @@ color:#eee;
 color:SteelBlue;
 } */
 
-#output h5, #output h1, #output h2, #output h3, #output h4, #output b {
+#output h5, #output h1, #output h2, #output h3, #output h4, #output b, #output strong {
 color:SteelBlue;
 }
 
@@ -1136,6 +1143,24 @@ h5.current_slide {
 #print_content {
     overflow-y:visible;
     height:auto;
+    width:100%;
+    font-family:"Times New Roman",Serif;
+    text-align:justify;
+    font-size:12pt;
+}
+
+#print_content .slide {
+    width:13cm;
+    margin:auto;
+}
+
+#print_content .slide_container {
+    width:13cm;
+    margin:auto;
+}
+
+#print_content .ww {
+    display:none;
 }
 
 #print_content h5 {
@@ -1158,11 +1183,10 @@ font-weight:bolder;
 
     body {
 	background: #fff;
-	font-size: 1em;
+	font-size: 12pt;
 	position:relative;
     width:100%;
     height:100%;
-	/* font-size:14pt; */
     /* overflow-y:auto; */
     }
 
@@ -1250,10 +1274,11 @@ font-weight:bolder;
 
     @page
     {
-	size: auto;   /* auto is the initial value */
+	/* size: auto; */  /* auto is the initial value */
+    size: A4 portrait;
 
 	/* this affects the margin in the printer settings */
-	margin: 20mm 20mm 20mm 20mm;
+	margin: 4cm;
     }
 
     #fontsel {

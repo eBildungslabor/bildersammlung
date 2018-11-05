@@ -20,7 +20,7 @@
                 <xsl:attribute name="slide">
                     <xsl:text>all</xsl:text>
                 </xsl:attribute>
-                <xsl:for-each select="//b">
+                <xsl:for-each select="//b|//hc_keyword">
                     <xsl:choose>
                         <xsl:when test="not(contains(current(), 'Exercise'))">
                             <xsl:element name="keyword">
@@ -59,7 +59,7 @@
                 <xsl:attribute name="slide">
                     <xsl:number format="1" level="any" count="slide"/>
                 </xsl:attribute>
-                <xsl:for-each select="*//b">
+                <xsl:for-each select="*//b|hc_keyword">
                     <xsl:if test="not(contains(., 'Exercise'))">
                         <xsl:element name="keyword">
                             <xsl:attribute name="slide">
